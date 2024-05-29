@@ -1,10 +1,13 @@
-import { Box, Container, Flex, Heading, Text, VStack, Link, HStack, Spacer, Button } from "@chakra-ui/react";
-import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
+import { Box, Container, Flex, Heading, Text, VStack, Link, HStack, Spacer, Button, useColorMode, useColorModeValue, IconButton } from "@chakra-ui/react";
+import { FaTwitter, FaGithub, FaLinkedin, FaSun, FaMoon } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 const Index = () => {
   const [posts, setPosts] = useState([]);
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bg = useColorModeValue("white", "gray.800");
+  const color = useColorModeValue("black", "white");
 
   useEffect(() => {
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
@@ -12,9 +15,9 @@ const Index = () => {
   }, []);
 
   return (
-    <Box>
+    <Box bg={bg} color={color} minH="100vh">
       {/* Navigation Bar */}
-      <Box as="nav" bg="brand.800" color="white" py={4}>
+      <Box as="nav" bg={useColorModeValue("brand.800", "gray.900")} color="white" py={4}>
         <Container maxW="container.lg">
           <Flex align="center">
             <Heading as="h1" size="lg">My Blog</Heading>
@@ -24,6 +27,13 @@ const Index = () => {
               <Link as={RouterLink} to="#about" color="white">About</Link>
               <Link as={RouterLink} to="#contact" color="white">Contact</Link>
               <Button as={RouterLink} to="/add-post" colorScheme="teal" size="sm">Add Post</Button>
+              <IconButton
+                icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
+                isRound
+                size="sm"
+                onClick={toggleColorMode}
+                aria-label="Toggle Dark Mode"
+              />
             </HStack>
           </Flex>
         </Container>
@@ -52,7 +62,7 @@ const Index = () => {
       </Container>
 
       {/* Footer */}
-      <Box as="footer" bg="brand.800" color="white" py={4} mt={8}>
+      <Box as="footer" bg={useColorModeValue("brand.800", "gray.900")} color="white" py={4} mt={8}>
         <Container maxW="container.lg">
           <Flex align="center" justify="space-between">
             <Text>&copy; {new Date().getFullYear()} My Blog. All rights reserved.</Text>
